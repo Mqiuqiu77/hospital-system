@@ -3,6 +3,7 @@ package com.hospital.service;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.Locale;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,13 +31,15 @@ public class UserService {
     }
 
     public void authenticate(String inputUsername, String password) {
-        String normalizedUsername = inputUsername.trim();
+        String normalizedUsername = inputUsername.trim().toLowerCase(Locale.ROOT);
         LoginAttempt attempt = attempts.get(normalizedUsername);
         Instant now = Instant.now();
         if (attempt != null && attempt.lockedUntil() != null && now.isBefore(attempt.lockedUntil())) {
             throw new AccountLockedException("登录失败次数过多，请稍后再试");
         }
-        if (!username.equalsIgnoreCase(normalizedUsername) || !passwordEncoder.matches(password, encodedPassword)) {
+        boolean passwordCorrect = passwordEncoder.matches(password, encodedPassword);
+        boolean usernameCorrect = username.equalsIgnoreCase(normalizedUsername);
+        if (!usernameCorrect || !passwordCorrect) {
             recordFailure(normalizedUsername, now);
             throw new BadCredentialsException("用户名或密码错误");
         }
