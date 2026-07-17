@@ -1,21 +1,64 @@
 package com.hospital.controller;
 
+import com.hospital.common.Result;
 import com.hospital.dto.LoginDTO;
+import com.hospital.dto.LoginResponse;
 import com.hospital.dto.UserInfoResponse;
+import com.hospital.entiy.User;
+import com.hospital.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import java.util.List;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    private final UserService userService;
+    private final HttpSessionSecurityContextRepository securityContextRepository =
+            new HttpSessionSecurityContextRepository();
 
-    @GetMapping("/info")
-    public UserInfoResponse getInfo(@RequestParam Integer id,
-                                    @RequestParam String name) {
-        return new UserInfoResponse(id, name);
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginDTO logindto){
-        return "欢迎:" + logindto.getUsername();
+    public Result<LoginResponse> login(@Valid @RequestBody LoginDTO loginDTO,
+                                       HttpServletRequest request, HttpServletResponse response) {
+        userService.authenticate(loginDTO.getUsername(), loginDTO.getPassword());
+        request.getSession(true);
+        request.changeSessionId();
+        var authentication = UsernamePasswordAuthenticationToken.authenticated(
+                loginDTO.getUsername().trim(), null, List.of(new SimpleGrantedAuthority("ROLE_USER")));
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(authentication);
+        SecurityContextHolder.setContext(context);
+        securityContextRepository.saveContext(context, request, response);
+        return Result.success(new LoginResponse(authentication.getName(), authentication.getName()));
+    }
+
+    @GetMapping("/me")
+    public Result<LoginResponse> me(java.security.Principal principal) {
+        return Result.success(new LoginResponse(principal.getName(), principal.getName()));
+    }
+
+    @GetMapping("/info")
+    public UserInfoResponse getInfo(@RequestParam Integer id, @RequestParam String name) {
+        return new UserInfoResponse(id, name);
+    }
+
+    @GetMapping("/detail")
+    public User userdetail() {
+        User user = new User();
+        user.setId(1);
+        user.setName("Tom");
+        user.setAge(20);
+        return user;
     }
 }
