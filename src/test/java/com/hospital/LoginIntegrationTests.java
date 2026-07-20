@@ -23,7 +23,7 @@ class LoginIntegrationTests {
     void protectedEndpointRequiresLogin() throws Exception {
         mockMvc.perform(get("/user/me"))
                 .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.code").value(401));
+                .andExpect(jsonPath("$.msg").value("请先登录"));
     }
 
     @Test
@@ -31,7 +31,7 @@ class LoginIntegrationTests {
         mockMvc.perform(post("/user/login").contentType(MediaType.APPLICATION_JSON)
                         .content("{\"username\":\"a\",\"password\":\"123\"}"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code").value(400));
+                .andExpect(jsonPath("$.msg").isNotEmpty());
 
         mockMvc.perform(post("/user/login").contentType(MediaType.APPLICATION_JSON)
                         .content("{\"username\":\"admin\",\"password\":\"WrongPass1!\"}"))
@@ -44,7 +44,7 @@ class LoginIntegrationTests {
         HttpSession session = mockMvc.perform(post("/user/login").contentType(MediaType.APPLICATION_JSON)
                         .content("{\"username\":\"admin\",\"password\":\"Hospital@123\"}"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.code").value(0))
+                .andExpect(jsonPath("$.code").value(200))
                 .andExpect(jsonPath("$.data.username").value("admin"))
                 .andReturn().getRequest().getSession(false);
 

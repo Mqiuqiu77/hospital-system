@@ -17,18 +17,18 @@ public class GlobalExceptionHandler {
                 .map(error -> error.getDefaultMessage())
                 .distinct()
                 .collect(Collectors.joining("；"));
-        return ResponseEntity.badRequest().body(Result.failure(400, message));
+        return ResponseEntity.badRequest().body(Result.error(message));
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Result<Void>> badCredentials(BadCredentialsException exception) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(Result.failure(401, "用户名或密码错误"));
+                .body(Result.error("用户名或密码错误"));
     }
 
     @ExceptionHandler(AccountLockedException.class)
     public ResponseEntity<Result<Void>> locked(AccountLockedException exception) {
         return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
-                .body(Result.failure(429, exception.getMessage()));
+                .body(Result.error(exception.getMessage()));
     }
 }

@@ -46,10 +46,10 @@ public class SecurityConfig {
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint((request, response, exception) ->
                                 writeJson(response, objectMapper, HttpServletResponse.SC_UNAUTHORIZED,
-                                        Result.failure(401, "请先登录")))
+                                        Result.error("请先登录")))
                         .accessDeniedHandler((request, response, exception) ->
                                 writeJson(response, objectMapper, HttpServletResponse.SC_FORBIDDEN,
-                                        Result.failure(403, "无权访问或CSRF令牌无效"))))
+                                        Result.error("无权访问或CSRF令牌无效"))))
                 .build();
     }
 
