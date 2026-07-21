@@ -49,8 +49,9 @@ public class UserController {
     }
 
     @GetMapping("/info")
-    public UserInfoResponse getInfo(@RequestParam Integer id, @RequestParam String name) {
-        return new UserInfoResponse(id, name);
+    public Result<UserInfoResponse> getInfo(@RequestParam Integer id, @RequestParam String name) {
+        UserInfoResponse result = new UserInfoResponse(id, name);
+        return Result.success(result);
     }
 
     @GetMapping("/detail")
@@ -60,5 +61,10 @@ public class UserController {
         user.setName("Tom");
         user.setAge(20);
         return user;
+    }
+
+    @GetMapping("/test1")
+    public String test(){
+        return "Hello Spring";
     }
 }
