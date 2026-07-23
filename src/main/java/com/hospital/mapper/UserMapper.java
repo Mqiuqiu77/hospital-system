@@ -1,11 +1,14 @@
 package com.hospital.mapper;
 
 
-import com.hospital.entiy.User;
+import com.hospital.entity.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
-//数据库访问类
+/** User database access mapper. */
 @Mapper
 public interface UserMapper {
-    User findByUsername(String username);
+
+    User findByUsername(@Param("username") String username);
 }

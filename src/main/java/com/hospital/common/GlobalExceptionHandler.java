@@ -1,6 +1,6 @@
 package com.hospital.common;
 
-import com.hospital.service.UserService.AccountLockedException;
+import com.hospital.service.UserService1.AccountLockedException;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

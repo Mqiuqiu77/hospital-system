@@ -4,8 +4,8 @@ import com.hospital.common.Result;
 import com.hospital.dto.LoginDTO;
 import com.hospital.dto.LoginResponse;
 import com.hospital.dto.UserInfoResponse;
-import com.hospital.entiy.User;
-import com.hospital.service.UserService;
+import com.hospital.entity.User;
+import com.hospital.service.UserService1;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    private final UserService userService;
+    private final UserService1 userService;
     private final HttpSessionSecurityContextRepository securityContextRepository =
             new HttpSessionSecurityContextRepository();
 
-    public UserController(UserService userService) {
+    public UserController(UserService1 userService) {
         this.userService = userService;
     }
 
@@ -57,9 +57,8 @@ public class UserController {
     @GetMapping("/detail")
     public User userdetail() {
         User user = new User();
-        user.setId(1);
-        user.setName("Tom");
-        user.setAge(20);
+        user.setId(1L);
+        user.setUsername("Tom");
         return user;
     }
 
