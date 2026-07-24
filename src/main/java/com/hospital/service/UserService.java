@@ -1,5 +1,10 @@
 package com.hospital.service;
 
-public interface UserService {
+import com.hospital.entity.User;
+import com.hospital.vo.UserVO;
+import org.springframework.stereotype.Service;
 
+
+public interface UserService {
+    UserVO login(String username);
 }
