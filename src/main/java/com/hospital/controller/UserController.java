@@ -1,14 +1,13 @@
 package com.hospital.controller;
 
 import com.hospital.common.Result;
+import com.hospital.dto.LoginDto;
 import com.hospital.entity.User;
 import com.hospital.service.UserService;
 import com.hospital.vo.UserVO;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -17,9 +16,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/login")
-    public Result<UserVO> login(@RequestParam String username){
-        return Result.success(userService.login(username));
+    @PostMapping("/login")
+    public Result<UserVO> login(@Valid @RequestBody LoginDto dto){
+        return Result.success(userService.login(dto));
     }
 
 }
