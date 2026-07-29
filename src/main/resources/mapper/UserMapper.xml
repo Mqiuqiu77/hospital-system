@@ -10,9 +10,18 @@
             resultType="com.hospital.entity.User">
 
         select *
-        from user
+        from users
         where username = #{username}
 
+    </select>
+
+    <select id="selectAll" resultType="com.hospital.entity.User">
+        select * from users;
+
+    </select>
+
+    <select id="selectById" resultType="com.hospital.entity.User">
+        select * from users where id = #{id}
     </select>
 
 </mapper>
