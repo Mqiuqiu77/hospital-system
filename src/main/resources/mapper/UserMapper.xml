@@ -24,4 +24,46 @@
         select * from users where id = #{id}
     </select>
 
+    <insert id="insert" useGeneratedKeys="true"
+            keyProperty="id">
+
+        insert into user
+        (
+        username,
+        password,
+        role,
+        create_time,
+        update_time
+        )
+        values
+        (
+        #{username},
+        #{password},
+        #{role},
+        #{createTime},
+        #{updateTime}
+        )
+
+    </insert>
+
+    <update id="update">
+
+        update user
+
+        set username=#{username},
+        password=#{password},
+        role=#{role},
+        update_time=#{updateTime}
+
+        where id=#{id}
+
+    </update>
+
+    <delete id="deleteById">
+
+        delete from user
+        where id=#{id}
+
+    </delete>
+
 </mapper>
