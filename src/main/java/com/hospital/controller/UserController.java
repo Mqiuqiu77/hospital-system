@@ -28,13 +28,4 @@ public class UserController {
         return "ok";
     }
 
-
-    @GetMapping("/test")
-    public String test(){
-
-        System.out.println(userService.getClass());
-
-        return "ok";
-    }
-
 }
