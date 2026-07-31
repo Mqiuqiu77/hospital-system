@@ -27,7 +27,7 @@
     <insert id="insert" useGeneratedKeys="true"
             keyProperty="id">
 
-        insert into users
+        insert into user
         (
         username,
         password,
@@ -48,88 +48,22 @@
 
     <update id="update">
 
-        update users
+        update user
 
-        <set>
-            <if test="username != null">
-                username = #{username},
-            </if>
-
-            <if test="password != null">
-                password = #{password},
-            </if>
-
-            <if test="role != null">
-                role=#{role},
-            </if>
-
-            update_time=#{updateTime}
-        </set>
-
-
-
+        set username=#{username},
+        password=#{password},
+        role=#{role},
+        update_time=#{updateTime}
 
         where id=#{id}
 
     </update>
 
-    <select id="selectByIds" resultType="com.hospital.entity.User">
-        select * from users
-        where id in
-        <foreach collection="ids"
-                 item="id"
-                 open="("
-                 separator=","
-                 close=")">
-            #{id}
-        </foreach>
-    </select>
-
-    <insert id="batchInsert">
-
-        insert into users
-        (
-        username,
-        password,
-        role
-        )
-
-        values
-
-        <foreach collection="users"
-                 item="user"
-                 separator=",">
-
-            (
-            #{user.username},
-            #{user.password},
-            #{user.role}
-            )
-
-        </foreach>
-
-    </insert>
-
     <delete id="deleteById">
 
-        delete from users
+        delete from user
         where id=#{id}
 
     </delete>
-
-    <select id="selectList" resultType="com.hospital.entity.User">
-        select * from users
-        <where>
-            <if test="username!=null">
-                and username = #{username}
-            </if>
-
-            <if test="role != null">
-                and role = #{role}
-            </if>
-
-
-        </where>
-    </select>
 
 </mapper>

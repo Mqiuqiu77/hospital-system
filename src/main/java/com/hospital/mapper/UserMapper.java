@@ -31,11 +31,4 @@ public interface UserMapper {
 
     void deleteById(@Param("id") Long id);
 
-    List<User> selectList(User user);
-
-//      查询多个用户
-    List<User> selectByIds(@Param("ids") List<Long> ids);
-
-//      批量插入
-    void batchInsert(@Param("users") List<User> users);
 }
