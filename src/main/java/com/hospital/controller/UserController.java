@@ -21,4 +21,11 @@ public class UserController {
         return Result.success(userService.login(dto));
     }
 
+
+    @GetMapping("/test")
+    public String test(){
+        System.out.println(userService.getClass());
+        return "ok";
+    }
+
 }
