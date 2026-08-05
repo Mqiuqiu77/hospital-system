@@ -10,7 +10,7 @@
             resultType="com.hospital.entity.User">
 
         select *
-        from users
+        from user
         where username = #{username}
 
     </select>
