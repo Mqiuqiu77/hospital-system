@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /** User database access mapper. */
@@ -31,4 +32,10 @@ public interface UserMapper {
 
     void deleteById(@Param("id") Long id);
 
+//  修改密码
+    void updatePasswordById(
+            @Param("id") Long id,
+            @Param("password") String password,
+            @Param("updateTime") LocalDateTime updateTime
+    );
 }

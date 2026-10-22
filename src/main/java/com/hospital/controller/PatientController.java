@@ -1,26 +1,34 @@
 package com.hospital.controller;
 
-import com.hospital.dto.PatientQueryDTO;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.hospital.common.Result;
+import com.hospital.dto.PatientUpdateDTO;
+import com.hospital.service.PatientService;
+import com.hospital.vo.PatientVO;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
-import javax.swing.plaf.PanelUI;
 
 @RestController
 @RequestMapping("/patients")
 public class PatientController {
+    private final PatientService patientService;
+
+
+    public PatientController(PatientService patientService){
+        this.patientService = patientService;
+    }
 
     @GetMapping("/{id}")
-    public String patientInfo(@PathVariable Integer id){
-        return "患者编号" + id;
+    public Result<PatientVO> patientInfo(@PathVariable Long id){
+        PatientVO patientVO = patientService.getPatientById(id);
+        return Result.success(patientVO);
     }
 
-    @GetMapping("/search")
-    public String search(PatientQueryDTO dto){
-        return  "查询条件：" + '\n' + "姓名:" + dto.getName() + '\n'
-        +"年龄：" + dto.getAge() + '\n' + "性别:" + dto.getGender();
+    @PutMapping("/{id}")
+    public Result<Void> updatePatient(@PathVariable Long id,
+                                      @Valid @RequestBody PatientUpdateDTO patientUpdateDTO){
+        patientService.updatePatient(id,patientUpdateDTO);
+        return Result.success(null);
 
-    }
+}
 }

@@ -15,6 +15,14 @@ import org.springframework.web.multipart.MultipartException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Result<?> handleUnauthorized(UnauthorizedException e){
+        Result<?> result = Result.error(e.getMessage());
+        result.setCode(401);
+        return  result;
+    }
+
     @ExceptionHandler(MultipartException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Result<?> handleMultipartException(MultipartException e) {

@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS users (
     id BIGINT NOT NULL AUTO_INCREMENT COMMENT '用户ID',
     username VARCHAR(50) NOT NULL COMMENT '用户名',
     password VARCHAR(255) NOT NULL COMMENT '加密后的密码',
+    token_version INT NOT NULL DEFAULT 0 COMMENT 'token版本',
     role VARCHAR(50) NOT NULL COMMENT '用户角色',
     create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -12,3 +13,37 @@ CREATE TABLE IF NOT EXISTS users (
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci
   COMMENT = '用户表';
+
+CREATE TABLE IF NOT EXISTS hospitals (
+    id BIGINT NOT NULL AUTO_INCREMENT COMMENT '医院ID',
+    name VARCHAR(100) NOT NULL COMMENT '医院名称',
+    address VARCHAR(255) NOT NULL COMMENT '医院地址',
+    phone VARCHAR(30) NOT NULL COMMENT '联系电话',
+    hospital_level VARCHAR(50) NOT NULL COMMENT '医院等级',
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_hospitals_name (name)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci
+  COMMENT = '医院表';
+
+CREATE TABLE IF NOT EXISTS patients (
+    id BIGINT NOT NULL AUTO_INCREMENT COMMENT '患者ID',
+    patient_no VARCHAR(32) NOT NULL COMMENT '患者编号',
+    name VARCHAR(50) NOT NULL COMMENT '患者姓名',
+    gender VARCHAR(10) NOT NULL COMMENT '性别',
+    birth_date DATE NOT NULL COMMENT '出生日期',
+    phone VARCHAR(30) NOT NULL COMMENT '联系电话',
+    address VARCHAR(255) NOT NULL COMMENT '地址',
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_patients_patient_no (patient_no)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci
+  COMMENT = '患者表';
